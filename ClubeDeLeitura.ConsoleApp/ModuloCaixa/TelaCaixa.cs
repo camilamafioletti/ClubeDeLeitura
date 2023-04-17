@@ -4,7 +4,9 @@ namespace ClubeDeLeitura.ConsoleApp
 {
     public class TelaCaixa : AppService
     {
-        public static string ApresentarMenuCaixa()
+        public RepositorioCaixa repositorioCaixa = null;
+
+        public string ApresentarMenuCaixa()
         {
 
             Console.Clear();
@@ -14,33 +16,35 @@ namespace ClubeDeLeitura.ConsoleApp
             Console.WriteLine("(3) Visualizar caixas");
             Console.WriteLine("(4) Excluir caixa");
             Console.WriteLine("(V) Voltar ao menu ");
+            Console.Write("\nOpção:  ");
 
             string opcaoMenu = Console.ReadLine();
 
             return opcaoMenu;
         }
 
-        public static void InserirNovaCaixa()
+        public void InserirNovaCaixa()
         {
             Caixa novaCaixa = ObterCaixa();
 
-            RepositorioCaixa.Criar(novaCaixa);
+            repositorioCaixa.Criar(novaCaixa);
 
             Mensagem("Sucesso!", ConsoleColor.Green);
         }
 
-        public static void EditarCaixa()
+        public void EditarCaixa()
         {
+            ListarCaixa();
             int idSelecionado = ReceberIdCaixa();
             Caixa caixaAtualizada = ObterCaixa();
 
-            RepositorioCaixa.Editar(idSelecionado, caixaAtualizada);
+            repositorioCaixa.Editar(idSelecionado, caixaAtualizada);
             Mensagem("Sucesso!", ConsoleColor.Green);
         }
 
-        public static void ListarCaixa()
+        public void ListarCaixa()
         {
-            ArrayList listaCaixa = RepositorioCaixa.SelecionarTodos();
+            ArrayList listaCaixa = repositorioCaixa.SelecionarTodos();
 
             Console.Clear();
             Console.WriteLine("Caixas registradas:");
@@ -64,23 +68,24 @@ namespace ClubeDeLeitura.ConsoleApp
             Console.ReadKey();
         }
 
-        public static void DeletarCaixa()
+        public void DeletarCaixa()
         {
+            ListarCaixa();
             int idSelecionado = ReceberIdCaixa();
-            RepositorioCaixa.Deletar(idSelecionado);
+            repositorioCaixa.Deletar(idSelecionado);
             Mensagem("Caixa excluída com sucesso!", ConsoleColor.Green);
         }
 
-        public static int ReceberIdCaixa()
+        public int ReceberIdCaixa()
         {
             bool idInvalido;
             int id;
             do
             {
-                Console.WriteLine("Digite o id da caixa: ");
+                Console.Write("Digite o id da caixa: ");
                 id = int.Parse(Console.ReadLine());
 
-                idInvalido = RepositorioCaixa.SelecionarCaixaPorId(id) == null;
+                idInvalido = repositorioCaixa.SelecionarCaixaPorId(id) == null;
 
                 if (idInvalido)
                 {
@@ -93,18 +98,18 @@ namespace ClubeDeLeitura.ConsoleApp
             return id;
         }
 
-        public static Caixa ObterCaixa()
+        public Caixa ObterCaixa()
         {
-            Console.WriteLine("Informe a cor da caixa: ");
+            Console.Write("Informe a cor da caixa: ");
             string cor = Console.ReadLine();
 
-            Console.WriteLine("Informe a etiqueta: ");
+            Console.Write("Informe a etiqueta: ");
             string etiqueta = Console.ReadLine();
 
-            Console.WriteLine("Informe o numero: ");
+            Console.Write("Informe o numero: ");
             int numero = int.Parse(Console.ReadLine());
 
-            Caixa caixa = new Caixa(RepositorioCaixa.contadorId, numero, cor, etiqueta);
+            Caixa caixa = new Caixa(repositorioCaixa.contadorId, numero, cor, etiqueta);
 
             return caixa;
         }

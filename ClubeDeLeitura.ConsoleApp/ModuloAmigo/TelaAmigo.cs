@@ -4,7 +4,10 @@ namespace ClubeDeLeitura.ConsoleApp
 {
     public class TelaAmigo : AppService
     {
-        public static string ApresentarMenuAmigo()
+
+        public RepositorioAmigo repositorioAmigo = null; 
+
+        public string ApresentarMenuAmigo()
         {
 
             Console.Clear();
@@ -14,6 +17,7 @@ namespace ClubeDeLeitura.ConsoleApp
             Console.WriteLine("(3) Visualizar amigos");
             Console.WriteLine("(4) Excluir amigo");
             Console.WriteLine("(V) Voltar ao menu ");
+            Console.Write("\nOpção:  ");
 
             string opcaoMenu = Console.ReadLine();
 
@@ -21,28 +25,29 @@ namespace ClubeDeLeitura.ConsoleApp
 
         }
 
-        public static void InserirNovoAmigo()
+        public void InserirNovoAmigo()
         {
             Amigo novoAmigo = ObterAmigo();
 
-            RepositorioAmigo.Criar(novoAmigo);
+            repositorioAmigo.Criar(novoAmigo);
 
             Mensagem("Amigo criado com sucesso!", ConsoleColor.Green);
         }
 
-        public static void EditarAmigo()
+        public void EditarAmigo()
         {
+            ListarAmigo();
             int idSelecionado = ReceberIdAmigo();
             Amigo amigoAtualizado = ObterAmigo();
 
-            RepositorioAmigo.Editar(idSelecionado, amigoAtualizado);
+            repositorioAmigo.Editar(idSelecionado, amigoAtualizado);
             Mensagem("Sucesso!", ConsoleColor.Green);
 
         }
 
-        public static void ListarAmigo()
+        public void ListarAmigo()
         {
-            ArrayList listaAmigos = RepositorioAmigo.SelecionarTodos();
+            ArrayList listaAmigos = repositorioAmigo.SelecionarTodos();
 
             Console.Clear();
             Console.WriteLine("Amigos registrados:");
@@ -66,23 +71,24 @@ namespace ClubeDeLeitura.ConsoleApp
             Console.ReadKey();
         }
 
-        public static void DeletarAmigo()
+        public void DeletarAmigo()
         {
+            ListarAmigo();
             int idSelecionado = ReceberIdAmigo();
-            RepositorioAmigo.Deletar(idSelecionado);
+            repositorioAmigo.Deletar(idSelecionado);
             Mensagem("Revista excluída com sucesso!", ConsoleColor.Green);
         }
 
-        public static int ReceberIdAmigo()
+        public int ReceberIdAmigo()
         {
             bool idInvalido;
             int id;
             do
             {
-                Console.WriteLine("Digite o id do amigo: ");
+                Console.Write("Digite o id do amigo: ");
                 id = int.Parse(Console.ReadLine());
 
-                idInvalido = RepositorioAmigo.SelecionarAmigoPorId(id) == null;
+                idInvalido = repositorioAmigo.SelecionarAmigoPorId(id) == null;
 
                 if (idInvalido)
                 {
@@ -95,21 +101,21 @@ namespace ClubeDeLeitura.ConsoleApp
             return id;
         }
 
-        public static Amigo ObterAmigo()
+        public Amigo ObterAmigo()
         {
-            Console.WriteLine("Informe o nome do amigo: ");
+            Console.Write("Informe o nome do amigo: ");
             string nome = Console.ReadLine();
 
-            Console.WriteLine("Informe o nome do responsável: ");
+            Console.Write("Informe o nome do responsável: ");
             string responsavel = Console.ReadLine();
 
-            Console.WriteLine("Informe o telefone do amigo: ");
+            Console.Write("Informe o telefone do amigo: ");
             string telefone = Console.ReadLine();
 
-            Console.WriteLine("Informe o endereço do amigo: ");
+            Console.Write("Informe o endereço do amigo: ");
             string endereco = Console.ReadLine();
 
-            Amigo amigo = new Amigo(RepositorioAmigo.contadorId, nome, responsavel, telefone, endereco);
+            Amigo amigo = new Amigo(repositorioAmigo.contadorId, nome, responsavel, telefone, endereco);
 
             return amigo;
         }

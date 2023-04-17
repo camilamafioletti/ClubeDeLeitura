@@ -1,24 +1,23 @@
-﻿using System.Collections;
+﻿using ClubeDeLeitura.ConsoleApp.Compartilhado;
+using System.Collections;
 
 namespace ClubeDeLeitura.ConsoleApp
 {
-    public class RepositorioAmigo
+    public class RepositorioAmigo : Repositorio
     {
-        public static int contadorId = 4;
-        public static ArrayList listaAmigos = new ArrayList();
 
-        public static void InserirAmigo(Amigo amigo)
+        public void InserirAmigo(Amigo amigo)
         {
-            listaAmigos.Add(amigo);
+            listaRegistros.Add(amigo);
         }
 
-        public static void Criar(Amigo amigo)
+        public void Criar(Amigo amigo)
         {
             InserirAmigo(amigo);
             contadorId++;
         }
 
-        public static void Editar(int idEditar, Amigo amigoEditado)
+        public void Editar(int idEditar, Amigo amigoEditado)
         {
             Amigo amigo = SelecionarAmigoPorId(idEditar);
 
@@ -28,22 +27,22 @@ namespace ClubeDeLeitura.ConsoleApp
             amigo.endereco = amigoEditado.endereco;
         }
 
-        public static void Deletar(int id)
+        public void Deletar(int id)
         {
             Amigo amigo = SelecionarAmigoPorId(id);
-            listaAmigos.Remove(amigo);
+            listaRegistros.Remove(amigo);
         }
 
-        public static ArrayList SelecionarTodos()
+        public ArrayList SelecionarTodos()
         {
-            return listaAmigos;
+            return listaRegistros;
         }
 
-        public static Amigo SelecionarAmigoPorId(int id)
+        public Amigo SelecionarAmigoPorId(int id)
         {
             Amigo amigo = null;
 
-            foreach (Amigo a in listaAmigos)
+            foreach (Amigo a in listaRegistros)
             {
                 if (a.id == id)
                 {

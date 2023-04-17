@@ -3,23 +3,21 @@ using System.Collections;
 
 namespace ClubeDeLeitura.ConsoleApp
 {
-    public class RepositorioCaixa 
+    public class RepositorioCaixa : Repositorio
     {
-        public static int contadorId = 4;
-        public static ArrayList listaCaixas = new ArrayList();
-
-        public static void InserirCaixa(Caixa caixa)
+        
+        public void InserirCaixa(Caixa caixa)
         {
-            listaCaixas.Add(caixa);
+            listaRegistros.Add(caixa);
         }
 
-        public static void Criar(Caixa caixa)
+        public void Criar(Caixa caixa)
         {
             InserirCaixa(caixa);
             contadorId++;
         }
 
-        public static void Editar(int idEditar, Caixa caixaEditada)
+        public void Editar(int idEditar, Caixa caixaEditada)
         {
             Caixa caixa = SelecionarCaixaPorId(idEditar);
 
@@ -28,22 +26,22 @@ namespace ClubeDeLeitura.ConsoleApp
             caixa.corCaixa = caixaEditada.corCaixa; 
         }
 
-        public static void Deletar(int id)
+        public void Deletar(int id)
         {
             Caixa caixa = SelecionarCaixaPorId(id);
-            listaCaixas.Remove(caixa);
+            listaRegistros.Remove(caixa);
         }
 
-        public static ArrayList SelecionarTodos()
+        public ArrayList SelecionarTodos()
         {
-            return listaCaixas;
+            return listaRegistros;
         }
 
-        public static Caixa SelecionarCaixaPorId(int id)
+        public Caixa SelecionarCaixaPorId(int id)
         {
             Caixa caixa = null;
 
-            foreach (Caixa a in listaCaixas)
+            foreach (Caixa a in listaRegistros)
             {
                 if (a.id == id)
                 {

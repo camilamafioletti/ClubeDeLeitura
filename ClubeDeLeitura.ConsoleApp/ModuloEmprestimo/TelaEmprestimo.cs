@@ -4,7 +4,11 @@ namespace ClubeDeLeitura.ConsoleApp
 {
     public class TelaEmprestimo : AppService
     {
-        public static string ApresentarMenuEmprestimo()
+        public RepositorioEmprestimo repositorioEmprestimo = null;
+        public RepositorioAmigo repositorioAmigo = null;
+        public RepositorioRevista repositorioRevista = null;
+
+        public string ApresentarMenuEmprestimo()
         {
 
             Console.Clear();
@@ -15,34 +19,36 @@ namespace ClubeDeLeitura.ConsoleApp
             Console.WriteLine("(4) Excluir empréstimo");
             Console.WriteLine("(5) Alterar status do empréstimo ");
             Console.WriteLine("(V) Voltar ao menu ");
+            Console.Write("\nOpção:  ");
 
             string opcaoMenu = Console.ReadLine();
 
             return opcaoMenu;
         }
 
-        public static void InserirNovoEmprestimo()
+        public void InserirNovoEmprestimo()
         {
             Emprestimo novoEmprestimo = ObterEmprestimo();
 
-            RepositorioEmprestimo.Criar(novoEmprestimo);
+            repositorioEmprestimo.Criar(novoEmprestimo);
 
             Mensagem("Sucesso!", ConsoleColor.Green);
         }
 
-        public static void EditarEmprestimo()
+        public void EditarEmprestimo()
         {
+            ListarEmprestimo();
             int idSelecionado = ReceberIdEmprestimo();
             Emprestimo emprestimoAtualizado = ObterEmprestimo();
 
-            RepositorioEmprestimo.Editar(idSelecionado, emprestimoAtualizado);
+            repositorioEmprestimo.Editar(idSelecionado, emprestimoAtualizado);
 
             Mensagem("Sucesso!", ConsoleColor.Green);
         }
 
-        public static void ListarEmprestimo()
+        public void ListarEmprestimo()
         {
-            ArrayList listaEmprestimo = RepositorioEmprestimo.SelecionarTodos();
+            ArrayList listaEmprestimo = repositorioEmprestimo.SelecionarTodos();
 
             Console.Clear();
             Console.WriteLine("Empréstimos registrados:");
@@ -65,14 +71,15 @@ namespace ClubeDeLeitura.ConsoleApp
             Console.ReadKey();
         }
 
-        public static void DeletarEmprestimo()
+        public void DeletarEmprestimo()
         {
+            ListarEmprestimo();
             int idSelecionado = ReceberIdEmprestimo();
-            RepositorioEmprestimo.Deletar(idSelecionado);
+            repositorioEmprestimo.Deletar(idSelecionado);
             Mensagem("Revista excluída com sucesso!", ConsoleColor.Green);
         }
 
-        public static int ReceberIdEmprestimo()
+        public int ReceberIdEmprestimo()
         {
             bool idInvalido;
             int id;
@@ -81,7 +88,7 @@ namespace ClubeDeLeitura.ConsoleApp
                 Console.WriteLine("Digite o id do empréstimo: ");
                 id = int.Parse(Console.ReadLine());
 
-                idInvalido = RepositorioEmprestimo.SelecionarEmprestimoPorId(id) == null;
+                idInvalido = repositorioEmprestimo.SelecionarEmprestimoPorId(id) == null;
 
                 if (idInvalido)
                 {
@@ -94,24 +101,25 @@ namespace ClubeDeLeitura.ConsoleApp
             return id;
         }
 
-        public static Emprestimo ObterEmprestimo()
+        public Emprestimo ObterEmprestimo()
         {
             Amigo amigo = null;
             Revista revista = null;
 
-            Console.WriteLine("Informe o id do amigo que quer a revista: ");
+            Console.Write("Informe o id do amigo que quer a revista: ");
             int idAmigo = int.Parse(Console.ReadLine());
 
-            Console.WriteLine("Informe o id da revista: ");
+            Console.Write("Informe o id da revista: ");
             int idRevista = int.Parse(Console.ReadLine());
 
-            Console.WriteLine("Informe a data do empréstimo: ");
+            Console.Write("Informe a data do empréstimo: ");
             string dataDoEmprestimo = Console.ReadLine();
 
-            Console.WriteLine("Informe a data de devolução: ");
+            Console.Write("Informe a data de devolução: ");
             string dataDevolucao = Console.ReadLine();
 
-            foreach (Amigo a in RepositorioAmigo.listaAmigos)
+
+            foreach (Amigo a in repositorioAmigo.listaRegistros)
             {
                 if (idAmigo == a.id)
                 {
@@ -119,7 +127,7 @@ namespace ClubeDeLeitura.ConsoleApp
                 }
             }
 
-            foreach (Revista r in RepositorioRevista.listaRevistas)
+            foreach (Revista r in repositorioRevista.listaRegistros)
             {
                 if (idRevista == r.id)
                 {
@@ -127,24 +135,27 @@ namespace ClubeDeLeitura.ConsoleApp
                 }
             }
 
-            Emprestimo emprestimo = new Emprestimo(RepositorioEmprestimo.contadorId, revista, amigo, dataDoEmprestimo, dataDevolucao, RepositorioEmprestimo.statusAtual);
+            Emprestimo emprestimo = new Emprestimo(repositorioEmprestimo.contadorId, revista, amigo, dataDoEmprestimo, dataDevolucao, repositorioEmprestimo.statusAtual);
             return emprestimo;
         }
 
-        public static void AlterarStatus()
+        public void AlterarStatus()
         {
+            ListarEmprestimo();
             int idFechar = ReceberIdEmprestimo();
 
             Emprestimo emprestimo = null;
 
-            foreach (Emprestimo e in RepositorioEmprestimo.listaEmprestimos)
+            foreach (Emprestimo e in repositorioEmprestimo.listaRegistros)
             {
                 if (idFechar == e.id)
                 {
                     emprestimo = e;
                 }
             }
-            RepositorioEmprestimo.FecharStatus(emprestimo);
+            repositorioEmprestimo.FecharStatus(emprestimo);
+
+            Mensagem("Sucesso!", ConsoleColor.Green);   
         }
     }
 }

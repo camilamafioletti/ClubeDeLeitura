@@ -1,25 +1,25 @@
-﻿using System.Collections;
+﻿using ClubeDeLeitura.ConsoleApp.Compartilhado;
+using System.Collections;
 
 namespace ClubeDeLeitura.ConsoleApp
 {
-    public class RepositorioEmprestimo
+    public class RepositorioEmprestimo : Repositorio
     {
-        public static int contadorId = 1;
-        public static ArrayList listaEmprestimos = new ArrayList();
-        public static string statusAtual = "ABERTO";
 
-        public static void InserirEmprestimo(Emprestimo emprestimo)
+        public string statusAtual = "ABERTO";
+
+        public void InserirEmprestimo(Emprestimo emprestimo)
         {
-            listaEmprestimos.Add(emprestimo);
+            listaRegistros.Add(emprestimo);
         }
 
-        public static void Criar(Emprestimo emprestimo)
+        public void Criar(Emprestimo emprestimo)
         {
             InserirEmprestimo(emprestimo);
             contadorId++;
         }
 
-        public static void Editar(int idEditar, Emprestimo emprestimoEditado)
+        public void Editar(int idEditar, Emprestimo emprestimoEditado)
         {
             Emprestimo emprestimo = SelecionarEmprestimoPorId(idEditar);
 
@@ -27,25 +27,25 @@ namespace ClubeDeLeitura.ConsoleApp
             emprestimo.revistaEmprestada = emprestimoEditado.revistaEmprestada;
             emprestimo.dataEmprestimo = emprestimoEditado.dataEmprestimo;
             emprestimo.dataDevolutiva = emprestimoEditado.dataDevolutiva;
-            //STATUS
+
         }
 
-        public static void Deletar(int id)
+        public void Deletar(int id)
         {
             Emprestimo emprestimo = SelecionarEmprestimoPorId(id);
-            listaEmprestimos.Remove(emprestimo);
+            listaRegistros.Remove(emprestimo);
         }
 
-        public static ArrayList SelecionarTodos()
+        public ArrayList SelecionarTodos()
         {
-            return listaEmprestimos;
+            return listaRegistros;
         }
 
-        public static Emprestimo SelecionarEmprestimoPorId(int id)
+        public Emprestimo SelecionarEmprestimoPorId(int id)
         {
             Emprestimo emprestimo = null;
 
-            foreach (Emprestimo a in listaEmprestimos)
+            foreach (Emprestimo a in listaRegistros)
             {
                 if (a.id == id)
                 {
@@ -56,7 +56,7 @@ namespace ClubeDeLeitura.ConsoleApp
             return emprestimo;
         }
 
-        public static void FecharStatus(Emprestimo emprestimo)
+        public void FecharStatus(Emprestimo emprestimo)
         {
             emprestimo.status = "FECHADO";
         }

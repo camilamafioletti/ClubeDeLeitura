@@ -4,8 +4,8 @@ namespace ClubeDeLeitura.ConsoleApp.Compartilhado
 {
     public class Repositorio
     {
-        public static int contadorId = 0;
-        public static ArrayList listaRegistros = new ArrayList();
+        public int contadorId = 4;
+        public ArrayList listaRegistros = new ArrayList();
 
         public void IncrementarId()
         {

@@ -4,7 +4,10 @@ namespace ClubeDeLeitura.ConsoleApp
 {
     public class TelaRevista : AppService
     {
-        public static string ApresentarMenuRevista()
+        public RepositorioRevista repositorioRevista = null;
+        public RepositorioCaixa repositorioCaixa = null;
+
+        public string ApresentarMenuRevista()
         {
 
             Console.Clear();
@@ -14,30 +17,32 @@ namespace ClubeDeLeitura.ConsoleApp
             Console.WriteLine("(3) Visualizar revistas");
             Console.WriteLine("(4) Excluir revista");
             Console.WriteLine("(V) Voltar ao menu ");
+            Console.Write("\nOpção:  ");
 
             string opcaoMenu = Console.ReadLine();
 
             return opcaoMenu;
         }
 
-        public static void InserirNovaRevista() 
+        public void InserirNovaRevista() 
         {
             Revista novaRevista = ObterRevista();
 
-            RepositorioRevista.Criar(novaRevista);
+            repositorioRevista.Criar(novaRevista);
 
             Mensagem("Sucesso!", ConsoleColor.Green);
         }
 
-        public static void EditarRevista()
+        public void EditarRevista()
         {
+            ListarRevistas();
             int idSelecionado = ReceberIdRevista();
 
-            foreach (Revista revista in RepositorioRevista.listaRevistas)
+            foreach (Revista revista in repositorioRevista.listaRegistros)
             {
                 if (revista.id == idSelecionado)
                 {
-                    foreach (Caixa caixa in RepositorioCaixa.listaCaixas)
+                    foreach (Caixa caixa in repositorioCaixa.listaRegistros)
                     {
                         if (revista.caixa.id == caixa.id)
                         {
@@ -49,14 +54,14 @@ namespace ClubeDeLeitura.ConsoleApp
             
             Revista revistaAtualizada = ObterRevista();
 
-            RepositorioRevista.Editar(idSelecionado, revistaAtualizada);
+            repositorioRevista.Editar(idSelecionado, revistaAtualizada);
 
             Mensagem("Sucesso!", ConsoleColor.Green);
         }
 
-        public static void ListarRevistas()
+        public void ListarRevistas()
         {
-            ArrayList listaRevista = RepositorioRevista.SelecionarTodos();
+            ArrayList listaRevista = repositorioRevista.SelecionarTodos();
 
             Console.Clear();
             Console.WriteLine("Revistas registradas:");
@@ -80,23 +85,24 @@ namespace ClubeDeLeitura.ConsoleApp
             Console.ReadKey();
         }
 
-        public static void DeletarRevista()
+        public void DeletarRevista()
         {
+            ListarRevistas();
             int idSelecionado = ReceberIdRevista();
-            RepositorioRevista.Deletar(idSelecionado);
+            repositorioRevista.Deletar(idSelecionado);
             Mensagem("Revista excluída com sucesso!", ConsoleColor.Green);
         }
 
-        public static int ReceberIdRevista()
+        public int ReceberIdRevista()
         {
             bool idInvalido;
             int id;
             do
             {
-                Console.WriteLine("Digite o id da revista: ");
+                Console.Write("Digite o id da revista: ");
                 id = int.Parse(Console.ReadLine());
 
-                idInvalido = RepositorioRevista.SelecionarRevistaPorId(id) == null;
+                idInvalido = repositorioRevista.SelecionarRevistaPorId(id) == null;
 
                 if (idInvalido)
                 {
@@ -109,23 +115,23 @@ namespace ClubeDeLeitura.ConsoleApp
             return id;
         }
 
-        public static Revista ObterRevista()
+        public Revista ObterRevista()
         {
-            Console.WriteLine("Informe o tipo da colecao: ");
+            Console.Write("Informe o tipo da colecao: ");
             string tipoColecao = Console.ReadLine();
 
-            Console.WriteLine("Informe o numero de edição: ");
+            Console.Write("Informe o numero de edição: ");
             int numeroEdicao = int.Parse(Console.ReadLine());
 
-            Console.WriteLine("Informe o ano: ");
+            Console.Write("Informe o ano: ");
             int ano = int.Parse(Console.ReadLine());
 
-            Console.WriteLine("Informe o id da caixa: ");
+            Console.Write("Informe o id da caixa: ");
             int idCaixa = int.Parse(Console.ReadLine());
 
             Caixa caixa = null;
 
-            foreach (Caixa c in RepositorioCaixa.listaCaixas)
+            foreach (Caixa c in repositorioCaixa.listaRegistros)
             {
                 if (idCaixa == c.id)
                 {
@@ -136,10 +142,10 @@ namespace ClubeDeLeitura.ConsoleApp
             while (caixa == null)
             {
                 Mensagem("Caixa inexistente!", ConsoleColor.Red);
-                Console.WriteLine("Digite o id da caixa que a revista pertence: ");
+                Console.Write("Digite o id da caixa que a revista pertence: ");
                 idCaixa = int.Parse(Console.ReadLine());
 
-                foreach (Caixa c in RepositorioCaixa.listaCaixas)
+                foreach (Caixa c in repositorioCaixa.listaRegistros)
                 {
                     if (idCaixa == c.id)
                     {
@@ -148,7 +154,7 @@ namespace ClubeDeLeitura.ConsoleApp
                 }
             }
 
-            Revista revista = new Revista(RepositorioRevista.contadorId, caixa, tipoColecao, ano, numeroEdicao);
+            Revista revista = new Revista(repositorioRevista.contadorId, caixa, tipoColecao, ano, numeroEdicao);
 
             return revista;
         }

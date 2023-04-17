@@ -1,24 +1,23 @@
-﻿using System.Collections;
+﻿using ClubeDeLeitura.ConsoleApp.Compartilhado;
+using System.Collections;
 
 namespace ClubeDeLeitura.ConsoleApp
 {
-    public class RepositorioRevista 
+    public class RepositorioRevista : Repositorio
     {
-        public static int contadorId = 4;
-        public static ArrayList listaRevistas = new ArrayList();
-
-        public static void InserirRevista(Revista revista)
+        
+        public void InserirRevista(Revista revista)
         {
-            listaRevistas.Add(revista);
+            listaRegistros.Add(revista);
         }
 
-        public static void Criar(Revista revista)
+        public void Criar(Revista revista)
         {
             InserirRevista(revista);
             contadorId++;
         }
 
-        public static void Editar(int idEditar, Revista revistaEditada)
+        public void Editar(int idEditar, Revista revistaEditada)
         {
             Revista revista = SelecionarRevistaPorId(idEditar);
 
@@ -27,21 +26,23 @@ namespace ClubeDeLeitura.ConsoleApp
             revista.colecao = revistaEditada.colecao;
             revista.caixa = revistaEditada.caixa;
         }
-        public static void Deletar(int id)
+
+        public void Deletar(int id)
         {
             Revista revista = SelecionarRevistaPorId(id);
-            listaRevistas.Remove(revista);
-        }
-        public static ArrayList SelecionarTodos()
-        {
-            return listaRevistas;
+            listaRegistros.Remove(revista);
         }
 
-        public static Revista SelecionarRevistaPorId(int id)
+        public ArrayList SelecionarTodos()
+        {
+            return listaRegistros;
+        }
+
+        public Revista SelecionarRevistaPorId(int id)
         {
             Revista revista = null;
 
-            foreach (Revista a in listaRevistas)
+            foreach (Revista a in listaRegistros)
             {
                 if (a.id == id)
                 {

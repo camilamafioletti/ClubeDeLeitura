@@ -2,19 +2,25 @@
 {
     public class Menu : AppService
     {
+
+        public TelaCaixa telaCaixa = null;
+        public TelaAmigo telaAmigo = null;
+        public TelaEmprestimo telaEmprestimo = null;
+        public TelaRevista telaRevista = null;
+
         public void MenuPrincipal()
         {
             while (true)
             {
                 Console.Clear();
 
-                Console.WriteLine("\n- Clube da Leitura do Gustavo -\n");
-
+                Console.WriteLine("\n═══ CLUBE DA LEITURA ═════════\n");
                 Console.WriteLine("(1) Gerenciar empréstimos");
                 Console.WriteLine("(2) Gerenciar revistas ");
                 Console.WriteLine("(3) Gerenciar caixas");
                 Console.WriteLine("(4) Gerenciar amigos");
                 Console.WriteLine("(S) Sair ");
+                Console.Write("\nOpção:  ");
 
                 string opcaoMenu = Console.ReadLine();
 
@@ -40,7 +46,7 @@
         {
             while (true)
             {
-                string opcaoMenu = TelaAmigo.ApresentarMenuAmigo();
+                string opcaoMenu = telaAmigo.ApresentarMenuAmigo();
 
                 if (opcaoMenu.ToUpper() == "V")
                 {
@@ -50,10 +56,10 @@
 
                 switch (opcaoMenu.ToUpper())
                 {
-                    case "1": TelaAmigo.InserirNovoAmigo(); break;
-                    case "2": TelaAmigo.EditarAmigo(); break;
-                    case "3": TelaAmigo.ListarAmigo(); break;
-                    case "4": TelaAmigo.DeletarAmigo(); break;
+                    case "1": telaAmigo.InserirNovoAmigo(); break;
+                    case "2": telaAmigo.EditarAmigo(); break;
+                    case "3": telaAmigo.ListarAmigo(); break;
+                    case "4": telaAmigo.DeletarAmigo(); break;
 
                     default: Mensagem("\nopção inválida \n", ConsoleColor.Red); break;
                 }
@@ -63,7 +69,7 @@
         {
             while (true)
             {
-                string opcaoMenu = TelaCaixa.ApresentarMenuCaixa();
+                string opcaoMenu = telaCaixa.ApresentarMenuCaixa();
 
                 if (opcaoMenu.ToUpper() == "V")
                 {
@@ -73,10 +79,10 @@
 
                 switch (opcaoMenu.ToUpper())
                 {
-                    case "1": TelaCaixa.InserirNovaCaixa(); break;
-                    case "2": TelaCaixa.EditarCaixa(); break;
-                    case "3": TelaCaixa.ListarCaixa(); break;
-                    case "4": TelaCaixa.DeletarCaixa(); break;
+                    case "1": telaCaixa.InserirNovaCaixa(); break;
+                    case "2": telaCaixa.EditarCaixa(); break;
+                    case "3": telaCaixa.ListarCaixa(); break;
+                    case "4": telaCaixa.DeletarCaixa(); break;
 
                     default: Mensagem("\nopção inválida \n", ConsoleColor.Red); break;
                 }
@@ -86,7 +92,7 @@
         {
             while (true)
             {
-                string opcaoMenu = TelaRevista.ApresentarMenuRevista();
+                string opcaoMenu = telaRevista.ApresentarMenuRevista();
 
                 if (opcaoMenu.ToUpper() == "V")
                 {
@@ -96,10 +102,10 @@
 
                 switch (opcaoMenu.ToUpper())
                 {
-                    case "1": TelaRevista.InserirNovaRevista(); break;
-                    case "2": TelaRevista.EditarRevista(); break;
-                    case "3": TelaRevista.ListarRevistas(); break;
-                    case "4": TelaRevista.DeletarRevista(); break;
+                    case "1": telaRevista.InserirNovaRevista(); break;
+                    case "2": telaRevista.EditarRevista(); break;
+                    case "3": telaRevista.ListarRevistas(); break;
+                    case "4": telaRevista.DeletarRevista(); break;
 
                     default: Mensagem("\nopção inválida \n", ConsoleColor.Red); break;
                 }
@@ -109,7 +115,7 @@
         {
             while (true)
             {
-                string opcaoMenu = TelaEmprestimo.ApresentarMenuEmprestimo();
+                string opcaoMenu = telaEmprestimo.ApresentarMenuEmprestimo();
 
                 if (opcaoMenu.ToUpper() == "V")
                 {
@@ -119,11 +125,11 @@
 
                 switch (opcaoMenu.ToUpper())
                 {
-                    case "1": TelaEmprestimo.InserirNovoEmprestimo(); break;
-                    case "2": TelaEmprestimo.EditarEmprestimo(); break;
-                    case "3": TelaEmprestimo.ListarEmprestimo(); break;
-                    case "4": TelaEmprestimo.DeletarEmprestimo(); break;
-                    case "5": TelaEmprestimo.AlterarStatus(); break;
+                    case "1": telaEmprestimo.InserirNovoEmprestimo(); break;
+                    case "2": telaEmprestimo.EditarEmprestimo(); break;
+                    case "3": telaEmprestimo.ListarEmprestimo(); break;
+                    case "4": telaEmprestimo.DeletarEmprestimo(); break;
+                    case "5": telaEmprestimo.AlterarStatus(); break;
 
                     default: Mensagem("\nopção inválida \n", ConsoleColor.Red); break;
                 }
